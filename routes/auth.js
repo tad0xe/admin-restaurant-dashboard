@@ -50,7 +50,7 @@ router.post('/auth/google', async (req, res) => {
         email: userDetails.email,
         picture: userDetails.picture,
         password: 'your_default_password_here',
-        isAdmin: false
+        isAdmin: true
       });
 
       // Save the new user to the database
