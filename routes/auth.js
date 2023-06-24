@@ -17,8 +17,8 @@ router.post('/auth/google', async (req, res) => {
     const response = await axios.post(
       'https://oauth2.googleapis.com/token', {
         code,
-        client_id: '58730156701-d27fqgjbhmuqt974hav87of8hofgi6i0.apps.googleusercontent.com',
-        client_secret: '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',
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
         redirect_uri: 'postmessage',
         grant_type: 'authorization_code'
       }
@@ -38,36 +38,41 @@ router.post('/auth/google', async (req, res) => {
     console.log('User Details:', userDetails);
 
 
-  // Check if the user already exists in the database
-  let user = await User.findOne({ email: userDetails.email });
-
-  if (!user) {
-    // User does not exist, create a new user instance
-    user = new User({
-      name: userDetails.name,
-      email: userDetails.email,
-      picture: userDetails.picture,
-      password: 'your_default_password_here',
-      isAdmin:false
+    // Check if the user already exists in the database
+    let user = await User.findOne({
+      email: userDetails.email
     });
 
-    // Save the new user to the database
-    await user.save();
-    console.log('New user saved to the database');
-  } else {
-    // User already exists, update the user details
-    user.name = userDetails.name;
-    user.picture = userDetails.picture;
-    await user.save();
-    console.log('User updated in the database');
-  }
+    if (!user) {
+      // User does not exist, create a new user instance
+      user = new User({
+        name: userDetails.name,
+        email: userDetails.email,
+        picture: userDetails.picture,
+        password: 'your_default_password_here',
+        isAdmin: false
+      });
 
-  let token = jwt.sign(user.toJSON(), process.env.SECRET, {
-    expiresIn: 604800 //1 WEEK
-  });
+      // Save the new user to the database
+      await user.save();
+      console.log('New user saved to the database');
+    } else {
+      // User already exists, update the user details
+      user.name = userDetails.name;
+      user.picture = userDetails.picture;
+      await user.save();
+      console.log('User updated in the database');
+    }
+
+    let token = jwt.sign(user.toJSON(), process.env.SECRET, {
+      expiresIn: 604800 //1 WEEK
+    });
 
     // Send the token and user details back to the frontend
-    res.status(200).json({ userDetails, token });
+    res.status(200).json({
+      userDetails,
+      token
+    });
 
     // ...
 
