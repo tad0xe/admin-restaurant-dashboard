@@ -57,7 +57,7 @@ app.use("/api", orderRoutes);
 app.use(passport.initialize());
 app.use(passport.session());
 //connect to mongodb
-/*
+
 mongoose
   .connect(process.env.CONNECTION_STRING)
   .then(() => {
@@ -65,7 +65,7 @@ mongoose
   })
   .catch(err => console.log(err));
 
-*/
+/*
 mongoose
   .connect(process.env.DATABASE, {
     useUnifiedTopology: true,
@@ -80,7 +80,7 @@ mongoose
     console.error("App starting error:", err.stack);
     process.exit(1);
   });
-
+*/
 //const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () =>  console.log(`Listening on port ${PORT}`));
