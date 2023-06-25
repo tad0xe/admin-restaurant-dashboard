@@ -5,5 +5,5 @@ cd node-express-restaurant
 
 
 npm install
-"# hotel-ui-backend" 
-"# admin-restaurant-dashboard" 
+
+nodemon server
