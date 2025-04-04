@@ -8,3 +8,4 @@ npm install
 
 nodemon server
 "# veri" 
+"# veri" 
